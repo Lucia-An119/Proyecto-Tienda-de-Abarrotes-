@@ -1,0 +1,67 @@
+import * as readline from "readline";
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function mostrarMenu(): void {
+    console.log("\n---------- Minimarket ----------");
+    console.log("1. Agregar cliente");
+    console.log("2. Agregar producto");
+    console.log("3. Listar clientes");
+    console.log("4. Listar productos");
+    console.log("5. Registrar venta");
+    console.log("6. Ordenar productos por precio");
+    console.log("0. Salir");
+
+    rl.question("Elija una opción: ", (opStr) => {
+        const op = parseInt(opStr);
+        switch(op) {
+            case 1:
+                rl.question("ID: ", idStr => {
+                    rl.question("Nombre: ", nombre => {
+                        rl.question("DNI: ", dni => {
+                            rl.question("Tipo: ", tipo => {
+                                agregarCliente(parseInt(idStr), nombre, dni, tipo);
+                                mostrarMenu();
+                            });
+                        });
+                    });
+                });
+                break;
+            case 2:
+                rl.question("ID: ", idStr => {
+                    rl.question("Nombre: ", nombre => {
+                        rl.question("Stock: ", stkStr => {
+                            rl.question("Precio: ", pStr => {
+                                agregarProducto(parseInt(idStr), nombre, parseInt(stkStr), parseFloat(pStr));
+                                mostrarMenu();
+                            });
+                        });
+                    });
+                });
+                break;
+            case 3: listarClientes(); mostrarMenu(); break;
+            case 4: listarProductos(); mostrarMenu(); break;
+            case 5:
+                rl.question("ID Venta: ", idVStr => {
+                    rl.question("ID Cliente: ", idCStr => {
+                        registrarVenta(parseInt(idVStr), parseInt(idCStr), [
+                            {id: 1, cantidad: 2}, // ejemplo fijo, luego puedes pedir datos dinámicos
+                        ]);
+                        mostrarMenu();
+                    });
+                });
+                break;
+            case 6: inventario.ordenarPorPrecio(); mostrarMenu(); break;
+            case 0: console.log("Saliendo..."); rl.close(); break;
+            default: console.log("Opción inválida"); mostrarMenu();
+        }
+    });
+}
+
+// ===== Inicio =====
+mostrarMenu();
+
+
