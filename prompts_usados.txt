@@ -9,3 +9,6 @@ Prompt: "Explica con un diagrama UML cómo se relacionan las clases Producto, Cl
 
 [2026-02-22 18:47]
 Prompt: "Convierte esta lógica en C++ a TypeScript, manteniendo modularidad y claridad."
+
+[2026-03-01 18:20]
+Prompt: "¿Quieres que te prepare también una versión con submenús (por ejemplo, elegir qué producto comprar/vender en lugar de que siempre sea arroz)?"
