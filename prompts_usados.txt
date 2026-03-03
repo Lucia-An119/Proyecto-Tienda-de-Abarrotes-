@@ -21,3 +21,7 @@ Prompt: "¿Quieres que te prepare también una versión con submenús (por ejemp
 
 [2026-03-03]
 Prompt: "Organizar los archivos con estructura : dominio, aplicación, interfaces e infraestructura."
+
+[2026-03-03]
+Prompt: "convertir mi proyecto a una interfaz (index.html, app.js, styles.css)."
+
