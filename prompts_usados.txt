@@ -1,14 +1,17 @@
 # prompts_usados.txt
 # Registro de los prompts utilizados para generar código con COPILOT
 
-[2026-02-20 19:35]
+[2026-02-20]
 Prompt: "Genera una clase en TypeScript para manejar productos de un minimarket con métodos para agregar, eliminar y listar."
 
-[2026-02-21 20:12]
+[2026-02-21]
 Prompt: "Explica con un diagrama UML cómo se relacionan las clases Producto, Cliente y Venta."
 
-[2026-02-22 18:47]
+[2026-02-22]
 Prompt: "Convierte esta lógica en C++ a TypeScript, manteniendo modularidad y claridad."
 
-[2026-03-01 18:20]
+[2026-02-23]
+Prompt: "Definir clases CategoriaProducto, DetalleVenta, MovimientoInventario."
+
+[2026-03-02]
 Prompt: "¿Quieres que te prepare también una versión con submenús (por ejemplo, elegir qué producto comprar/vender en lugar de que siempre sea arroz)?"
