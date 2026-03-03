@@ -1,8 +1,7 @@
 import { Producto } from "../domain/Producto";
-import { IProductoRepository } from "../domain/IProductoRepo";
 import * as fs from "fs";
 
-export class ProductoRepositoryArchivo implements IProductoRepository {
+export class ProductoArchivo {
     private file = "productos.json";
 
     guardar(producto: Producto): void {
@@ -26,4 +25,5 @@ export class ProductoRepositoryArchivo implements IProductoRepository {
         fs.writeFileSync(this.file, JSON.stringify(productos, null, 2));
     }
 }
+
 

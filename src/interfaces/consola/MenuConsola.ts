@@ -1,11 +1,12 @@
 import * as readline from "readline";
-import { Producto } from "../../domain/Producto";
+import { Producto } from "../../domain/Producto" ;
 import { Proveedor } from "../../domain/Proveedor";
 import { Cliente } from "../../domain/Cliente";
 import { Venta } from "../../domain/Venta";
 import { Inventario } from "../../domain/Inventario";
 import { MovimientoInventario } from "../../domain/MovimientoInventario";
 import { Promocion } from "../../domain/Promocion";
+import { DetalleVenta } from "../../domain/DetalleVenta";
 
 
 export class MenuConsola {
@@ -33,16 +34,19 @@ export class MenuConsola {
                         rl.question("Nombre: ", (nombre) => {
                             rl.question("Precio: ", (precioStr) => {
                                 rl.question("Stock inicial: ", (stockStr) => {
-                                    const producto = new Producto(
-                                        this.productos.length + 1,
-                                        nombre,
-                                        parseFloat(precioStr),
-                                        parseInt(stockStr)
-                                    );
-                                    this.productos.push(producto);
-                                    console.log(`Producto agregado: ${producto.nombre}`);
-                                    mostrarMenu();
-                                });
+                                    rl.question("Categoría: ", (categoria) => {
+                                        const producto = new Producto(
+                                            this.productos.length + 1,
+                                            nombre,
+                                            parseFloat(precioStr),
+                                            parseInt(stockStr),
+                                            categoria,
+                                        );
+                                        this.productos.push(producto);
+                                        console.log(`Producto agregado: ${producto.nombre}`);
+                                        mostrarMenu();
+                                    });
+                                });    
                             });
                         });
                         break;
@@ -77,8 +81,10 @@ export class MenuConsola {
                             mostrarMenu();
                             break;
                         }
+
                         console.log("Productos disponibles:");
                         this.productos.forEach(p => console.log(`${p.id} - ${p.nombre} (Stock: ${p.stock})`));
+
                         rl.question("ID producto: ", (idStr) => {
                             const producto = this.productos.find(p => p.id === parseInt(idStr));
                             if (!producto) {
@@ -86,10 +92,13 @@ export class MenuConsola {
                                 mostrarMenu();
                                 return;
                             }
+
                             rl.question("Cantidad: ", (cantStr) => {
                                 try {
                                     const cantidad = parseInt(cantStr);
-                                    const venta = new Venta(Date.now(), this.cliente, producto, cantidad, new Date());
+                                    const venta = new Venta(Date.now(), this.cliente, new Date());
+                                    const detalle = new DetalleVenta(producto, cantidad, producto.precio);
+                                    venta.agregarDetalle(detalle);
                                     const movimiento = new MovimientoInventario(producto, cantidad, "salida", new Date());
                                     this.inventario.registrarMovimiento(movimiento);
                                     this.ventas.push(venta);
@@ -101,7 +110,7 @@ export class MenuConsola {
                             });
                         });
                         break;
-
+                        
                     case "4":
                         this.inventario.mostrarInventario();
                         mostrarMenu();

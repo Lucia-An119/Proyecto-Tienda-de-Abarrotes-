@@ -7,6 +7,6 @@ export class Promocion {
     ) {}
 
     aplicar(venta: Venta): number {
-        return venta.calcularTotal() * (1 - this.descuento / 100);
-    }
+        const total = venta.detalles.reduce((sum, d) => sum + d.subtotal(), 0); 
+        const descuento = (this.descuento / 100) * total; return total - descuento;}
 }

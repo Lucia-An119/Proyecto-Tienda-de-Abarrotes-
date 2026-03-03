@@ -1,11 +1,10 @@
 import { Producto } from "../domain/Producto";
-import { CategoriaProducto } from "../domain/CategoriaProducto";
-import { IProductoRepository } from "../domain/IProductoRepo";
+import { ProductoArchivo } from "../infrastructure/ProductoArchivo";
 
 export class AgregarProducto {
-    constructor(private productoRepo: IProductoRepository) {}
+    constructor(private productoRepo: ProductoArchivo) {}
 
-    ejecutar(nombre: string, precio: number, stock: number, categoria: CategoriaProducto): Producto {
+    ejecutar(nombre: string, precio: number, stock: number, categoria: string): Producto {
         const producto = new Producto(Date.now(), nombre, precio, stock, categoria);
         this.productoRepo.guardar(producto);
         return producto;
