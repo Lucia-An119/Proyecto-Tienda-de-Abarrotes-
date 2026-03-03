@@ -8,11 +8,11 @@ const inventario = new Inventario();
 const productoRepo = new ProductoRepositoryArchivo();
 const registrarVenta = new RegistrarVenta(productoRepo, inventario);
 
-const cliente = new Cliente(1, "Juan Pérez", "Calle 123");
+const cliente = new Cliente(1, "Juan Pérez");
 const productos = productoRepo.obtenerTodos();
 
-const menu = new MenuConsola(registrarVenta);
-menu.iniciar(cliente, productos);
+const menu = new MenuConsola();
+menu.iniciar();
 
 
 
