@@ -2,17 +2,11 @@ import { Venta } from "./Venta";
 
 export class Promocion {
     constructor(
-        public id: number,
         public descripcion: string,
         public descuento: number
     ) {}
 
-    aplicarPromocion(venta: Venta): number {
-        const total = venta.calcularTotal();
-        return total - (total * this.descuento / 100);
-    }
-
-    aplicaSiTotalMayor(venta: Venta, montoMinimo: number): boolean {
-        return venta.calcularTotal() >= montoMinimo;
+    aplicar(venta: Venta): number {
+        return venta.calcularTotal() * (1 - this.descuento / 100);
     }
 }
