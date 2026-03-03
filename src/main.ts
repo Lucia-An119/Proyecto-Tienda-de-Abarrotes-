@@ -10,14 +10,12 @@ import { Promocion } from "./domain/Promocion";
 import * as readline from "readline";
 
 // Datos iniciales
-const categoriaGranos = new CategoriaProducto(1, "Granos");
-const categoriaBebidas = new CategoriaProducto(2, "Bebidas");
+const categorias: CategoriaProducto[] = [
+    new CategoriaProducto(1, "Granos"),
+    new CategoriaProducto(2, "Bebidas")
+];
 
-const arroz = new Producto(1, "Arroz", 5, 20, categoriaGranos);
-const lentejas = new Producto(2, "Lentejas", 6, 15, categoriaGranos);
-const jugo = new Producto(3, "Jugo", 3, 30, categoriaBebidas);
-
-const productos: Producto[] = [arroz, lentejas, jugo];
+const productos: Producto[] = [];
 
 const proveedor1 = new Proveedor(1, "Proveedor A", "555-1234");
 const cliente1 = new Cliente(1, "Juan Pérez", "Calle 123");
@@ -33,16 +31,22 @@ const rl = readline.createInterface({
 
 function mostrarMenu() {
     console.log("\n=== MENÚ PRINCIPAL ===");
-    console.log("1. Registrar compra");
-    console.log("2. Registrar venta");
-    console.log("3. Mostrar inventario");
-    console.log("4. Aplicar promoción");
-    console.log("5. Ver historial de ventas de cliente");
+    console.log("1. Crear nuevo producto");
+    console.log("2. Registrar compra");
+    console.log("3. Registrar venta");
+    console.log("4. Mostrar inventario");
+    console.log("5. Aplicar promoción");
+    console.log("6. Ver historial de ventas de cliente");
     console.log("0. Salir");
     rl.question("Elige una opción: ", manejarOpcion);
 }
 
 function mostrarProductos(callback: (producto: Producto) => void) {
+    if (productos.length === 0) {
+        console.log("No hay productos registrados.");
+        mostrarMenu();
+        return;
+    }
     console.log("\n=== PRODUCTOS DISPONIBLES ===");
     productos.forEach(p => {
         console.log(`${p.id}. ${p.nombre} (Stock: ${p.stock}, Precio: $${p.precio})`);
@@ -60,7 +64,36 @@ function mostrarProductos(callback: (producto: Producto) => void) {
 
 function manejarOpcion(opcion: string) {
     switch (opcion) {
-        case "1": // Compra
+        case "1": // Crear producto
+            rl.question("Nombre del producto: ", (nombre) => {
+                rl.question("Precio: ", (precioStr) => {
+                    rl.question("Stock inicial: ", (stockStr) => {
+                        console.log("Categorías disponibles:");
+                        categorias.forEach(c => console.log(`${c.id}. ${c.nombre}`));
+                        rl.question("Elige el ID de la categoría: ", (catStr) => {
+                            const categoria = categorias.find(c => c.id === parseInt(catStr));
+                            if (!categoria) {
+                                console.log("Categoría inválida.");
+                                mostrarMenu();
+                                return;
+                            }
+                            const producto = new Producto(
+                                productos.length + 1,
+                                nombre,
+                                parseFloat(precioStr),
+                                parseInt(stockStr),
+                                categoria
+                            );
+                            productos.push(producto);
+                            console.log(` Producto creado: ${producto.nombre}`);
+                            mostrarMenu();
+                        });
+                    });
+                });
+            });
+            break;
+
+        case "2": // Compra
             mostrarProductos((producto) => {
                 rl.question("Cantidad a comprar: ", (cantidadStr) => {
                     const cantidad = parseInt(cantidadStr);
@@ -72,7 +105,7 @@ function manejarOpcion(opcion: string) {
             });
             break;
 
-        case "2": // Venta
+        case "3": // Venta
             mostrarProductos((producto) => {
                 rl.question("Cantidad a vender: ", (cantidadStr) => {
                     const cantidad = parseInt(cantidadStr);
@@ -91,22 +124,23 @@ function manejarOpcion(opcion: string) {
             });
             break;
 
-        case "3":
+        case "4":
             inventario.mostrarInventario();
             mostrarMenu();
             break;
 
-        case "4":
+        case "5":
             if (ventas.length === 0) {
                 console.log("No hay ventas registradas.");
             } else {
                 const promo = new Promocion(1, "Descuento del 10%", 10);
-                const ultimaVenta: Venta = ventas[ventas.length - 1]!; // el "!" asegura que no es undefined
+                const ultimaVenta = ventas[ventas.length - 1]!;
                 console.log(`Total con promoción: $${promo.aplicarPromocion(ultimaVenta)}`);
             }
             mostrarMenu();
             break;
-        case "5":
+
+        case "6":
             const historial = cliente1.verHistorialVentas(ventas);
             console.log(`Historial de ventas de ${cliente1.nombre}:`);
             historial.forEach(v => v.mostrarInfo());
@@ -126,5 +160,6 @@ function manejarOpcion(opcion: string) {
 
 // Iniciar programa
 mostrarMenu();
+
 
 
